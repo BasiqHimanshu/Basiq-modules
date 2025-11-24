@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 
+console.log("CLI LOADED!!!!");
+
 const fs = require("fs");
 const path = require("path");
 const { diffLines } = require("diff");
+
+// ...rest of your code
+
 
 // --- CLI Arguments ---
 const args = process.argv.slice(2);
