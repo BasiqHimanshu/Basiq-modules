@@ -13,16 +13,28 @@ if (command === "add") {
     installComponent(component);
 }
 function installComponent(name) {
-    // FINAL FIX: go two levels up to find templates
+    // Correct path: from dist/cli → project root → components
     const sourcePath = path.join(__dirname, "../../components", `${name}.tsx`);
-    const targetPath = path.join(process.cwd(), "src", "components", `${name}.tsx`);
+    // FIXED: Install directly into components/
+    const targetPath = path.join(process.cwd(), "components", `${name}.tsx`);
     if (!fs.existsSync(sourcePath)) {
         console.log(`❌ Component "${name}" does not exist.`);
         return;
     }
+    let userCode = "";
+    if (fs.existsSync(targetPath)) {
+        userCode = fs.readFileSync(targetPath, "utf8");
+    }
     const templateCode = fs.readFileSync(sourcePath, "utf8");
+    if (userCode) {
+        const differences = diffLines(userCode, templateCode);
+        if (differences.length > 1) {
+            console.log(`⚠ Component "${name}" is outdated.`);
+            return;
+        }
+    }
     fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-    fs.writeFileSync(targetPath, templateCode);
+    fs.copyFileSync(sourcePath, targetPath);
     console.log(`✔ Installed ${name}!`);
-    console.log(`➡ File created at src/components/${name}.tsx`);
+    console.log(`➡ File created at components/${name}.tsx`);
 }
