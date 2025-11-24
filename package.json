@@ -2,7 +2,7 @@
   "name": "@basiq/basiq360-modules",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "bin": {
     "basiq360-modules": "./dist/cli/index.js"
   },
