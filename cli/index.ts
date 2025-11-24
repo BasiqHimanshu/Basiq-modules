@@ -18,8 +18,8 @@ if (command === "add") {
 }
 
 function installComponent(name) {
-  // IMPORTANT FIX: use __dirname to read from inside package
-  const sourcePath = path.join(__dirname, "..", "components", `${name}.tsx`);
+  // FINAL FIX: go two levels up to find templates
+  const sourcePath = path.join(__dirname, "../../components", `${name}.tsx`);
 
   const targetPath = path.join(process.cwd(), "src", "components", `${name}.tsx`);
 
@@ -28,23 +28,10 @@ function installComponent(name) {
     return;
   }
 
-  let userCode = "";
-  if (fs.existsSync(targetPath)) {
-    userCode = fs.readFileSync(targetPath, "utf8");
-  }
-
   const templateCode = fs.readFileSync(sourcePath, "utf8");
 
-  if (userCode) {
-    const diff = diffLines(userCode, templateCode);
-    if (diff.length > 1) {
-      console.log(`⚠ Component "${name}" is outdated.`);
-      return;
-    }
-  }
-
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
+  fs.writeFileSync(targetPath, templateCode);
 
   console.log(`✔ Installed ${name}!`);
   console.log(`➡ File created at src/components/${name}.tsx`);
