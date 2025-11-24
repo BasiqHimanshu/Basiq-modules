@@ -3,8 +3,8 @@
     "outDir": "dist",
     "rootDir": ".",
     "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
 
     "jsx": "react-jsx",
     "esModuleInterop": true,

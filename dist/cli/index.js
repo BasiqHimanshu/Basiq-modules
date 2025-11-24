@@ -1,11 +1,7 @@
 #!/usr/bin/env node
-import fs from "fs";
-import path from "path";
-import { diffLines } from "diff";
-import { fileURLToPath } from "url";
-// --- Resolve __dirname and __filename in ESM ---
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const fs = require("fs");
+const path = require("path");
+const { diffLines } = require("diff");
 // --- CLI Arguments ---
 const args = process.argv.slice(2);
 const command = args[0];
@@ -20,9 +16,7 @@ if (command === "add") {
 }
 // --- Installer Function ---
 function installComponent(name) {
-    // Template file in your package
     const sourcePath = path.join(__dirname, "..", "components", `${name}.tsx`);
-    // Output file in user project
     const targetPath = path.join(process.cwd(), "src", "components", `${name}.tsx`);
     if (!fs.existsSync(sourcePath)) {
         console.log(`❌ Component "${name}" does not exist.`);
