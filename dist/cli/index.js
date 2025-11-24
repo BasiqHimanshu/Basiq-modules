@@ -1,14 +1,12 @@
 #!/usr/bin/env node
-console.log("CLI LOADED!!!!");
 const fs = require("fs");
 const path = require("path");
 const { diffLines } = require("diff");
-// ...rest of your code
-// --- CLI Arguments ---
+// CLI args
 const args = process.argv.slice(2);
 const command = args[0];
 const component = args[1];
-// --- Validation ---
+// Validation
 if (!command || !component) {
     console.log("Usage: basiq360-modules add <component>");
     process.exit(1);
@@ -16,9 +14,9 @@ if (!command || !component) {
 if (command === "add") {
     installComponent(component);
 }
-// --- Installer Function ---
 function installComponent(name) {
-    const sourcePath = path.join(__dirname, "..", "components", `${name}.tsx`);
+    // FIX: load templates from repo root, not from dist
+    const sourcePath = path.join(process.cwd(), "components", `${name}.tsx`);
     const targetPath = path.join(process.cwd(), "src", "components", `${name}.tsx`);
     if (!fs.existsSync(sourcePath)) {
         console.log(`❌ Component "${name}" does not exist.`);
